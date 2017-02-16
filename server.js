@@ -1,0 +1,1 @@
+rockmsvc = require('rocksmsvc');
