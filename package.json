@@ -1,0 +1,26 @@
+{
+  "name": "rockbase",
+  "version": "1.0.0",
+  "description": "test rockmsvc",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glennswest/rockbase.git"
+  },
+  "keywords": [
+    "rocksmsvc"
+  ],
+  "author": "Glenn West",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/glennswest/rockbase/issues"
+  },
+  "homepage": "https://github.com/glennswest/rockbase#readme",
+  "dependencies": {
+    "rockmsvc": "*"
+  }
+}
