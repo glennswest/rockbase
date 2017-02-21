@@ -1,1 +1,1 @@
-rockmsvc = require('rocksmsvc');
+rockmsvc = require('rockmsvc');
