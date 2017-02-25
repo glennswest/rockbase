@@ -1,0 +1,148 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rockbase
+    name: centos7-nodejs
+  spec:
+    tags:
+    - annotations:
+        openshift.io/imported-from: ryanj/centos7-nodejs:current
+      from:
+        kind: DockerImage
+        name: ryanj/centos7-nodejs:current
+      generation: null
+      importPolicy: {}
+      name: current
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rockbase
+    name: rockbase
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rockbase
+    name: rockbase
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: rockbase:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        uri: https://github.com/glennswest/rockbase
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: centos7-nodejs:current
+      type: Docker
+    triggers:
+    - github:
+        secret: Kiv7nY6TrHskWt99BKkO
+      type: GitHub
+    - generic:
+        secret: C1u8JarPB6ZeXR-Sjw7z
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rockbase
+    name: rockbase
+  spec:
+    replicas: 1
+    selector:
+      app: rockbase
+      deploymentconfig: rockbase
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.rockbase.image.entrypoint: '["container-entrypoint","/bin/bash","-c","npm
+            run -d $NPM_RUN"]'
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: rockbase
+          deploymentconfig: rockbase
+      spec:
+        containers:
+        - image: rockbase:latest
+          name: rockbase
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+            - name: rockbase-persistent-storage
+              mountPath: /data
+          resources: {}
+        volumes:
+          - name: rockbase-persistent-storage
+            mountPath: /data
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - rockbase
+        from:
+          kind: ImageStreamTag
+          name: rockbase:latest
+      type: ImageChange
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rockbase
+    name: rockbase
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: rockbase
+      deploymentconfig: rockbase
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
