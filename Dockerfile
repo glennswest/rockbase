@@ -1,8 +1,5 @@
-#FROM mhart/alpine-node:base-6
 FROM mhart/alpine-node:6
 
-RUN adduser -S service -D
-USER service
 WORKDIR /src
 ADD . .
 
