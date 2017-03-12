@@ -1,6 +1,7 @@
 #FROM mhart/alpine-node:base-6
 FROM mhart/alpine-node:6
 
+USER service
 WORKDIR /src
 ADD . .
 
@@ -11,5 +12,5 @@ RUN apk add --no-cache make gcc g++ python \
     && rm -rf /var/cache/apk/* \
 
 EXPOSE 8080
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
 
